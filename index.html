@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SritQuiz - Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        outfit: ['Outfit', 'sans-serif'],
+                    },
+                    colors: {
+                        border: "hsl(var(--border))",
+                        input: "hsl(var(--input))",
+                        ring: "hsl(var(--ring))",
+                        background: "hsl(var(--background))",
+                        foreground: "hsl(var(--foreground))",
+                        primary: {
+                            DEFAULT: "hsl(var(--primary))",
+                            foreground: "hsl(var(--primary-foreground))",
+                        },
+                        secondary: {
+                            DEFAULT: "hsl(var(--secondary))",
+                            foreground: "hsl(var(--secondary-foreground))",
+                        },
+                        destructive: {
+                            DEFAULT: "hsl(var(--destructive))",
+                            foreground: "hsl(var(--destructive-foreground))",
+                        },
+                        muted: {
+                            DEFAULT: "hsl(var(--muted))",
+                            foreground: "hsl(var(--muted-foreground))",
+                        },
+                        accent: {
+                            DEFAULT: "hsl(var(--accent))",
+                            foreground: "hsl(var(--accent-foreground))",
+                        },
+                        popover: {
+                            DEFAULT: "hsl(var(--popover))",
+                            foreground: "hsl(var(--popover-foreground))",
+                        },
+                        card: {
+                            DEFAULT: "hsl(var(--card))",
+                            foreground: "hsl(var(--card-foreground))",
+                        },
+                    },
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="min-h-screen flex items-center justify-center p-4 animate-fade-in overflow-hidden">
+    <canvas id="particle-canvas" class="fixed inset-0 pointer-events-none -z-10" style="opacity: 0.6;"></canvas>
+
+    <div class="w-full max-w-md animate-slide-up animate-float z-10">
+        <div class="text-center mb-8">
+            <h1 class="text-5xl font-bold bg-gradient-primary bg-clip-text text-transparent mb-2">
+                SritQuiz
+            </h1>
+            <p class="text-muted-foreground">Master Your Knowledge</p>
+        </div>
+
+        <div class="glass-card border-2 rounded-xl overflow-hidden">
+            <div class="p-6 pb-4">
+                <h2 class="text-2xl font-semibold leading-none tracking-tight">Welcome Back</h2>
+                <p class="text-sm text-muted-foreground mt-1.5">Sign in to continue your learning journey</p>
+            </div>
+
+            <div class="p-6 pt-0">
+                <!-- Tabs -->
+                <div class="w-full">
+                    <div class="grid w-full grid-cols-2 bg-muted p-1 rounded-lg mb-6">
+                        <button id="tab-student"
+                            class="flex items-center justify-center gap-2 text-sm font-medium py-1.5 px-3 rounded-md transition-all bg-background text-foreground shadow-sm"
+                            onclick="switchTab('student')">
+                            <i data-lucide="graduation-cap" class="w-4 h-4"></i>
+                            Student
+                        </button>
+                        <button id="tab-admin"
+                            class="flex items-center justify-center gap-2 text-sm font-medium py-1.5 px-3 rounded-md transition-all text-muted-foreground hover:bg-background/50"
+                            onclick="switchTab('admin')">
+                            <i data-lucide="shield-check" class="w-4 h-4"></i>
+                            Admin
+                        </button>
+                    </div>
+
+                    <!-- Student Form -->
+                    <div id="content-student" class="space-y-4">
+                        <form id="student-form" class="space-y-4">
+                            <div class="space-y-2">
+                                <label for="student-email"
+                                    class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Email</label>
+                                <input id="student-email" type="email" placeholder="student@quiz.com" required
+                                    class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 transition-all focus:shadow-primary" />
+                            </div>
+                            <div class="space-y-2">
+                                <label for="student-password"
+                                    class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Password</label>
+                                <input id="student-password" type="password" placeholder="••••••••" required
+                                    class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 transition-all focus:shadow-primary" />
+                            </div>
+                            <button type="submit"
+                                class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 w-full hover-lift">
+                                Sign In
+                            </button>
+                            <p class="text-xs text-muted-foreground text-center">
+                                Demo: student@quiz.com / student123
+                            </p>
+                        </form>
+                    </div>
+
+                    <!-- Admin Form -->
+                    <div id="content-admin" class="space-y-4 hidden">
+                        <form id="admin-form" class="space-y-4">
+                            <div class="space-y-2">
+                                <label for="admin-email"
+                                    class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Email</label>
+                                <input id="admin-email" type="email" placeholder="admin@quiz.com" required
+                                    class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 transition-all focus:shadow-secondary" />
+                            </div>
+                            <div class="space-y-2">
+                                <label for="admin-password"
+                                    class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Password</label>
+                                <input id="admin-password" type="password" placeholder="••••••••" required
+                                    class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 transition-all focus:shadow-secondary" />
+                            </div>
+                            <button type="submit"
+                                class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-secondary text-secondary-foreground hover:bg-secondary/80 h-10 px-4 py-2 w-full hover-lift">
+                                Sign In as Admin
+                            </button>
+                            <p class="text-xs text-muted-foreground text-center">
+                                Demo: admin@quiz.com / admin123
+                            </p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/store.js"></script>
+    <script src="js/particles.js"></script>
+    <script src="js/login.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+
+</html>
